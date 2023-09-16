@@ -1,25 +1,55 @@
-import logo from './logo.svg';
-import './App.css';
+import {useEffect} from 'react'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import AuthProvider from 'context/AuthProvider'
+import Home from './pages/Home'
+import Register from './pages/Register'
+
+import LoginModal from './components/LoginModal'
+
+
+import {
+  createBrowserRouter, 
+  RouterProvider,
+  Link
+} from "react-router-dom"
+
+
+const NoMatch = () => {
+  <div>
+    <h2>No page could be found at the entered route.</h2>
+    <p>Please return to the <Link to="/">home page</Link></p>
+  </div>
 }
+
+const router = createBrowserRouter([
+  {
+    path: "/", 
+    element: <Home />,
+    children: [
+      {
+        path: "login",
+        element: <LoginModal />
+      }
+    ]
+  }, 
+  {
+    path: "*",
+    element: <NoMatch />
+  }
+])
+
+const App = () => {
+  // const location = useLocation()
+
+  // const state = location.state
+  return (
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  )
+
+
+}
+
 
 export default App;
